@@ -173,7 +173,7 @@ const MainWorkspace = () => {
     try {
       const response = await axios.post(`${BACKEND_URL}/api/llm/generate-component`, {
         prompt: prompt
-      });
+      }, {withCredentials: true});
 
       // Check for success and data structure from backend
       console.log(response.data.data.jsx);
