@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:5173', // Adjust to your frontend port
+  origin: ['https://component-gen.vercel.app', 'http://localhost:5173'], // Adjust to your frontend port
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
