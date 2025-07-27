@@ -176,6 +176,7 @@ const MainWorkspace = () => {
       });
 
       // Check for success and data structure from backend
+      console.log(response.data.data.jsx);
       if (response.data.success && response.data.data) {
         setGeneratedJsx(response.data.data.jsx || ''); // Set JSX
         setGeneratedCss(response.data.data.css || ''); // Set CSS
@@ -283,14 +284,7 @@ const MainWorkspace = () => {
           {generatedCss && (
             <style>{generatedCss}</style>
           )}
-          {/*
-            LiveError and LivePreview should be direct children of LiveProvider.
-            The `noInline={true}` prop is correct for code that defines a component.
-            The error message implies that the 'code' provided to LiveProvider
-            resulted in something that wasn't a directly renderable JSX expression
-            or a component that returned JSX. This is usually due to missing
-            definitions in the `scope`.
-          */}
+          
           <LiveError className="text-red-500 bg-red-100 p-2 rounded-md text-sm whitespace-pre-wrap absolute top-0 left-0 right-0 z-10" />
           <LivePreview className="w-full h-full flex items-center justify-center overflow-auto" />
         </LiveProvider>

@@ -5,22 +5,31 @@ const router = Router();
 
 // System prompt for the Gemini model to ensure strict output format
 const COMPONENT_SYSTEM_PROMPT = `
-You are a strict React functional component generator.
-Your task is to generate ONLY the JSX code for the component and its associated Tailwind CSS classes or custom CSS.
-Do NOT include any explanations, comments, introductions, or any other text outside the specified JSON format.
-Ensure the component is a functional React component and uses modern React practices (e.g., hooks if needed).
+You are a strict React functional component generator for a live code editor sandbox.
 
-Output must be a raw JSON object with two keys: "jsx" and "css".
-The "jsx" value should be a string containing the complete React JSX code.
-The "css" value should be a string containing only the Tailwind CSS classes used or any necessary custom CSS.
-End with a call to render(<ComponentName />) (replace ComponentName with the actual component's name)
-The code must be ready to run in a sandboxed environment like react-live with noInline={true}
-If the user prompt does not specify a name, use 'GeneratedComponent' as the component name
+Your output must:
+- Define the component as a function (function or const, but do NOT use export default or any export statements)
+- End with a call to render(<ComponentName />) (replace ComponentName with the actual component's name)
+- Use ONLY Tailwind CSS utility classes for all styling (do NOT use custom CSS, <style> tags, or CSS-in-JS)
+- The 'css' field in your output must always be an empty string or a comment like '/* No custom CSS needed, all styling is via Tailwind classes */'
+- Output a single JavaScript code block, and nothing else (no explanations, comments, or extra text)
+- The code must be ready to run in a sandboxed environment like react-live with noInline={true}
+- If the user prompt does not specify a name, use 'GeneratedComponent' as the component name
 
-Example of desired output format:
+Example output:
+function GeneratedComponent() {
+  return (
+    <div className="bg-blue-500 text-white p-4 rounded-lg">
+      Hello from GeneratedComponent!
+    </div>
+  );
+}
+render(<GeneratedComponent />);
+
+Output format:
 {
-  "jsx": "import React from 'react';\\n\\nconst MyComponent = () => {\\n  return (\\n    <div className=\\"bg-blue-500 text-white p-4 rounded-lg\\">\\n      Hello from MyComponent!\\n    </div>\\n  );\\n};\\n\\nrender(<ComponentName />);",
-  "css": "/* No custom CSS needed, only Tailwind classes */"
+  "jsx": "function GeneratedComponent() {\\n  return (\\n    <div className=\\"bg-blue-500 text-white p-4 rounded-lg\\">\\n      Hello from GeneratedComponent!\\n    </div>\\n  );\\n}\\nrender(<GeneratedComponent />);",
+  "css": "/* No custom CSS needed, all styling is via Tailwind classes */"
 }
 `;
 
@@ -75,6 +84,14 @@ router.post("/generate-component", async (req, res) => {
     if (typeof componentData.jsx !== 'string' || typeof componentData.css !== 'string') {
       return res.status(500).json({
         error: "AI response did not contain valid 'jsx' or 'css' strings.",
+        receivedData: componentData,
+        rawResponse: responseText
+      });
+    }
+    // Additional validation: ensure code ends with render(...) and does not contain export
+    if (!/render\s*\(/.test(componentData.jsx) || /export\s+default|export\s+/.test(componentData.jsx)) {
+      return res.status(500).json({
+        error: "Generated code must end with a render(...) call and must not contain export statements.",
         receivedData: componentData,
         rawResponse: responseText
       });
