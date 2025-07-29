@@ -1,12 +1,7 @@
 import express from 'express';
 import Session from '../Model/Session.js';
-// import redisClient from '../redisClient.js';
 
 const router = express.Router();
-
-// Helper: Redis keys
-// const ALL_SESSIONS_KEY = 'sessions:all';
-// const SESSION_KEY = (id) => `sessions:${id}`;
 
 // Helper function to ensure proper Date objects
 const ensureDateObjects = (chatMessages) => {
@@ -18,39 +13,29 @@ const ensureDateObjects = (chatMessages) => {
   }));
 };
 
-// GET all sessions (no Redis cache)
+// GET all sessions
 router.get('/', async (req, res) => {
   try {
-    // const cached = await redisClient.get(ALL_SESSIONS_KEY);
-    // if (cached) {
-    //   return res.json({ success: true, data: JSON.parse(cached), cached: true });
-    // }
     const sessions = await Session.find().sort({ createdAt: -1 });
-    // await redisClient.set(ALL_SESSIONS_KEY, JSON.stringify(sessions));
-    res.json({ success: true, data: sessions, cached: false });
+    res.json({ success: true, data: sessions });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
-// GET single session (no Redis cache)
+// GET single session
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    // const cached = await redisClient.get(SESSION_KEY(id));
-    // if (cached) {
-    //   return res.json({ success: true, data: JSON.parse(cached), cached: true });
-    // }
     const session = await Session.findById(id);
     if (!session) return res.status(404).json({ success: false, error: 'Session not found' });
-    // await redisClient.set(SESSION_KEY(id), JSON.stringify(session));
-    res.json({ success: true, data: session, cached: false });
+    res.json({ success: true, data: session });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
-// POST create session (no Redis cache)
+// POST create session
 router.post('/', async (req, res) => {
   try {
     const { 
@@ -83,7 +68,6 @@ router.post('/', async (req, res) => {
       lastGeneratedJsx: lastGeneratedJsx || currentJsx || '',
       lastGeneratedCss: lastGeneratedCss || currentCss || ''
     });
-    // await redisClient.del(ALL_SESSIONS_KEY);
     res.status(201).json({ success: true, data: session });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -118,8 +102,6 @@ router.put('/:id', async (req, res) => {
     const session = await Session.findByIdAndUpdate(id, updateData, { new: true });
     if (!session) return res.status(404).json({ success: false, error: 'Session not found' });
     
-    // await redisClient.del(ALL_SESSIONS_KEY);
-    // await redisClient.del(SESSION_KEY(id));
     res.json({ success: true, data: session });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -177,14 +159,12 @@ router.post('/:id/add-message', async (req, res) => {
   }
 });
 
-// DELETE session (no Redis cache)
+// DELETE session
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const session = await Session.findByIdAndDelete(id);
     if (!session) return res.status(404).json({ success: false, error: 'Session not found' });
-    // await redisClient.del(ALL_SESSIONS_KEY);
-    // await redisClient.del(SESSION_KEY(id));
     res.json({ success: true, data: session });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
