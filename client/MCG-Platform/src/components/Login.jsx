@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
 import { Code } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "@/config/config";
@@ -86,57 +85,57 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-primary flex items-center justify-center p-4">
+    <div className="min-h-screen bg-zinc-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <Code className="w-6 h-6 text-primary-foreground" />
+          <div className="w-10 h-10 bg-card/50 rounded-lg flex items-center justify-center shadow-lg">
+            <Code className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground">ComponentGen</h1>
+          <h1 className="text-2xl font-bold text-white">ComponentGen</h1>
         </div>
 
-        <Card className="bg-card/80 backdrop-blur-sm border-border/20 shadow-soft">
+        <Card className="bg-card/50 backdrop-blur-sm shadow-card hover:shadow-card-hover">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Welcome</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle className="text-2xl text-center text-white">Welcome</CardTitle>
+            <CardDescription className="text-center text-zinc-400">
               Sign in to your account or create a new one
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 bg-zinc-900">
+                <TabsTrigger value="signin" className="text-zinc-400 data-[state=active]:bg-zinc data-[state=active]:text-white">Sign In</TabsTrigger>
+                <TabsTrigger value="signup" className="text-zinc-400 data-[state=active]:bg-zinc data-[state=active]:text-white">Sign Up</TabsTrigger>
               </TabsList>
-              <TabsContent value="signin" className="space-y-4">
+              <TabsContent value="signin" className="space-y-4 pt-3">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" className="text-zinc-300">Email</Label>
                     <Input
                       id="email"
                       placeholder="name@example.com"
                       type="email"
-                      className="bg-input/50"
+                      className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500"
                       value={loginEmail}
                       onChange={e => setLoginEmail(e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password" className="text-zinc-300">Password</Label>
                     <Input
                       id="password"
                       type="password"
-                      className="bg-input/50"
+                      className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500"
                       value={loginPassword}
                       onChange={e => setLoginPassword(e.target.value)}
                       required
                     />
                   </div>
-                  {error && <div className="text-red-500 text-sm">{error}</div>}
+                  {error && <div className="text-red-400 text-sm bg-red-900/20 p-2 rounded border border-red-800">{error}</div>}
                   <Button
-                    className="w-full bg-primary hover:bg-primary/90"
+                    className="w-full shadow-button hover:shadow-button-hover bg-secondary text-white font-medium"
                     disabled={isLoading}
                     type="submit"
                   >
@@ -145,56 +144,56 @@ const AuthPage = () => {
                 </form>
               </TabsContent>
 
-              <TabsContent value="signup" className="space-y-4">
+              <TabsContent value="signup" className="space-y-4 pt-3">
                 <form onSubmit={handleSignup} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name" className="text-zinc-300">Full Name</Label>
                     <Input
                       id="name"
                       placeholder="John Doe"
-                      className="bg-input/50"
+                      className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500"
                       value={signupName}
                       onChange={e => setSignupName(e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
+                    <Label htmlFor="signup-email" className="text-zinc-300">Email</Label>
                     <Input
                       id="signup-email"
                       placeholder="name@example.com"
                       type="email"
-                      className="bg-input/50"
+                      className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500"
                       value={signupEmail}
                       onChange={e => setSignupEmail(e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
+                    <Label htmlFor="signup-password" className="text-zinc-300">Password</Label>
                     <Input
                       id="signup-password"
                       type="password"
-                      className="bg-input/50"
+                      className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500"
                       value={signupPassword}
                       onChange={e => setSignupPassword(e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
+                    <Label htmlFor="confirm-password" className="text-zinc-300">Confirm Password</Label>
                     <Input
                       id="confirm-password"
                       type="password"
-                      className="bg-input/50"
+                      className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500"
                       value={signupConfirmPassword}
                       onChange={e => setSignupConfirmPassword(e.target.value)}
                       required
                     />
                   </div>
-                  {error && <div className="text-red-500 text-sm">{error}</div>}
+                  {error && <div className="text-red-400 text-sm bg-red-900/20 p-2 rounded border border-red-800">{error}</div>}
                   <Button
-                    className="w-full bg-primary hover:bg-primary/90"
+                    className="w-full bg-secondary shadow-button hover:shadow-button-hover text-white font-medium"
                     disabled={isLoading}
                     type="submit"
                   >
@@ -203,38 +202,6 @@ const AuthPage = () => {
                 </form>
               </TabsContent>
             </Tabs>
-
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <Separator />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-              </div>
-            </div>
-
-            <div className="grid gap-3">
-              <Button variant="outline" className="w-full" disabled>
-                <span className="mr-2 h-4 w-4" />
-                GitHub
-              </Button>
-              <Button variant="outline" className="w-full" disabled>
-                <span className="mr-2 h-4 w-4" />
-                Google
-              </Button>
-            </div>
-
-            <p className="px-8 text-center text-sm text-muted-foreground mt-6">
-              By clicking continue, you agree to our{" "}
-              <a href="#" className="underline hover:text-primary">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="#" className="underline hover:text-primary">
-                Privacy Policy
-              </a>
-              .
-            </p>
           </CardContent>
         </Card>
       </div>

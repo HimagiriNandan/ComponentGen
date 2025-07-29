@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import userController from './Controller/userController.js';
 import llmController from './Controller/llm_config/index.js';
+import sessionController from './Controller/sessionController.js';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ mongoose.connect(process.env.MONGO_URL, {
 // Routes
 app.use('/api/user', userController);
 app.use('/api/llm', llmController);
+app.use('/api/sessions', sessionController);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

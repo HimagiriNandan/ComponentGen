@@ -1,3 +1,69 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global black background */
+html, body {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#root {
+  background-color: #000000;
+  min-height: 100vh;
+}
+
+/* Global dark mode styles */
+html.dark {
+  color-scheme: dark;
+}
+
+/* Additional dark mode utilities */
+.dark .bg-background {
+  background-color: hsl(var(--background));
+}
+
+.dark .bg-card {
+  background-color: hsl(var(--card));
+}
+
+.dark .bg-muted {
+  background-color: hsl(var(--muted));
+}
+
+.dark .text-foreground {
+  color: hsl(var(--foreground));
+}
+
+.dark .text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Ensure proper contrast in dark mode */
+.dark .shadow-soft {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.dark .shadow-glow {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

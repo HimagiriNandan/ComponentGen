@@ -4,6 +4,7 @@ import Login from './components/Login';
 import LandingPage from './components/landingPage';
 import SessionManager from './components/SessionManager';
 import MainWorkspace from './components/MainWorkspace';
+import SessionInitializer from './components/SessionInitializer';
 import { Provider } from 'react-redux';
 import store from './store';
 import useAuthInit from './hooks/authInit';
@@ -20,15 +21,19 @@ function App() {
     }
   }
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Login mode="signup" />} />
-        <Route path="/dashboard" element={handleSession() ? <SessionManager /> : <LandingPage />} />
-        <Route path="/workspace" element={handleSession() ? <MainWorkspace /> : <LandingPage />} />
-      </Routes>
-    </Router>
+    <div className="min-h-screen bg-black">
+      <Router>
+        <SessionInitializer />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login mode="signup" />} />
+          <Route path="/dashboard" element={handleSession() ? <SessionManager /> : <LandingPage />} />
+          <Route path="/sessions" element={handleSession() ? <SessionManager /> : <LandingPage />} />
+          <Route path="/workspace" element={handleSession() ? <MainWorkspace /> : <LandingPage />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
